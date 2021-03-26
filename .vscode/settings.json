@@ -1,0 +1,23 @@
+{
+    "javascript.validate.enable": false,
+    "javascript.preferences.quoteStyle": "single",
+    "javascript.format.enable": true,
+    "javascript.autoClosingTags": true,
+    "javascript.format.semicolons": "remove",
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "standard.validate": [
+        {
+            "language": "javascript",
+            "autoFix": true
+        },
+    ],
+    "editor.tabSize": 2,
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true,
+        "autoFix": true,
+        "editor.formatOnSave": false
+    },
+    "typescript.preferences.quoteStyle": "single",
+}
