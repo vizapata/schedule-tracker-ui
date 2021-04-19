@@ -33,7 +33,7 @@ export class EventResultsComponent implements AfterViewInit {
     { title: 'Fecha', columnDef: 'date', value: (e: AppEvent) => new Date(e.date).toLocaleString() },
     { title: 'Evento', columnDef: 'event', value: (e: AppEvent) => EVENT_TYPE.get(e.eventType) },
     { title: 'Identificación', columnDef: 'personId', value: (e: AppEvent) => e.person.id },
-    { title: 'Nombres', columnDef: 'name', value: (e: AppEvent) => `${e.person.firstName} ${e.person.firstName}` },
+    { title: 'Nombres', columnDef: 'name', value: (e: AppEvent) => `${e.person.firstName} ${e.person.lastName}` },
     { title: 'Departamento', columnDef: 'department', value: (e: AppEvent) => e.person.department },
     { title: 'Área', columnDef: 'area', value: (e: AppEvent) => e.person.area },
   ]
