@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,6 +22,10 @@ export class EventResultsComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   fileProcessed: boolean = false;
   events: MatTableDataSource<AppEvent> = new MatTableDataSource<AppEvent>();
+  range = new FormGroup({
+    startDate: new FormControl(),
+    endDate: new FormControl()
+  });
   eventFilter: EventFilter = {
     startDate: new Date(),
     endDate: new Date(),
@@ -98,31 +103,53 @@ export class EventResultsComponent implements AfterViewInit {
   filterPredicate(data: AppEvent, filter: string) {
     const serialized = this.fullTransform([
       data.person.firstName,
-      data.person.lastName, 
+      data.person.lastName,
       data.person.area,
       data.person.department,
       data.person.id,
     ])
+    let dateFiltered = true
+    if (this.eventFilter.startDate && this.eventFilter.endDate) {
+      dateFiltered = this.eventFilter.startDate.getTime() <= data.date && data.date <= this.eventFilter.endDate.getTime()
+    }
+    else if (this.eventFilter.startDate) {
+      dateFiltered = this.eventFilter.startDate.getTime() <= data.date
+    }
+    else if (this.eventFilter.endDate) {
+      dateFiltered = data.date <= this.eventFilter.endDate.getTime()
+    }
 
-    return serialized.includes(this.lowerCaseAndTrim(this.eventFilter.text))
-    // if (this.fromDate && this.toDate) {
-    //   return data.date >= this.fromDate && data.date <= this.toDate;
-    // }
-    // return true;
+    return dateFiltered && serialized.includes(this.lowerCaseAndTrim(this.eventFilter.text))
   }
 
-  applyInputFilter(event: Event) {
-    this.eventFilter.text = (event.target as HTMLInputElement).value;
+  private reload() {
     this.events.filter = '' + Math.random();
     if (this.events.paginator) {
       this.events.paginator.firstPage();
     }
   }
-  // applyStartDateFilter(Event) {
-  //   this.events.filter;
-  // }
-  // applyEndDateFilter(Event) {
-  //   this.events.filter;
-  // }
 
+  applyInputFilter(event: Event) {
+    this.eventFilter.text = (event.target as HTMLInputElement).value;
+    this.reload()
+  }
+
+  applyDateFilter() {
+    console.log('applyStartDateFilter START=', this.range.get('startDate')?.value, 'END = ', this.range.get('endDate')?.value)
+    this.eventFilter.startDate = undefined
+    this.eventFilter.endDate = undefined
+    if (this.range.get('startDate')) {
+      this.eventFilter.startDate = this.range.get('startDate')?.value
+      this.eventFilter.startDate?.setHours(0)
+      this.eventFilter.startDate?.setMinutes(0)
+      this.eventFilter.startDate?.setSeconds(0)
+    }
+    if (this.range.get('endDate')) {
+      this.eventFilter.endDate = this.range.get('endDate')?.value
+      this.eventFilter.endDate?.setHours(23)
+      this.eventFilter.endDate?.setMinutes(59)
+      this.eventFilter.endDate?.setSeconds(59)
+    }
+    this.reload()
+  }
 }
