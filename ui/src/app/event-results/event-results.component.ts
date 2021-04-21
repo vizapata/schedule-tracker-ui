@@ -27,8 +27,6 @@ export class EventResultsComponent implements AfterViewInit {
     endDate: new FormControl()
   });
   eventFilter: EventFilter = {
-    startDate: new Date(),
-    endDate: new Date(),
     text: ''
   };
   selectedFiles?: FileList;
@@ -49,11 +47,6 @@ export class EventResultsComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.events.paginator = this.paginator;
   }
-
-  get fromDate() { return new Date(2020, 1, 1).getDate(); }
-  get toDate() { return new Date(2022, 1, 1).getDate(); }
-  // get fromDate() { return this.filterForm.get('fromDate').value; }
-  // get toDate() { return this.filterForm.get('toDate').value; }
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
@@ -118,7 +111,6 @@ export class EventResultsComponent implements AfterViewInit {
     else if (this.eventFilter.endDate) {
       dateFiltered = data.date <= this.eventFilter.endDate.getTime()
     }
-
     return dateFiltered && serialized.includes(this.lowerCaseAndTrim(this.eventFilter.text))
   }
 
@@ -135,7 +127,6 @@ export class EventResultsComponent implements AfterViewInit {
   }
 
   applyDateFilter() {
-    console.log('applyStartDateFilter START=', this.range.get('startDate')?.value, 'END = ', this.range.get('endDate')?.value)
     this.eventFilter.startDate = undefined
     this.eventFilter.endDate = undefined
     if (this.range.get('startDate')) {
