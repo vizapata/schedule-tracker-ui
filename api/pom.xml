@@ -220,6 +220,11 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <additionalArgs>
+                            --initialize-at-build-time=org.slf4j.LoggerFactory
+                            </additionalArgs>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
