@@ -33,12 +33,6 @@ public final class Main {
             .thenAccept(ws -> {
               var url = String.format("%s://%s:%d", "http", "localhost", ws.port());
               LOGGER.info("WEB server is up! " + url);
-              File htmlFile = new File(url);
-              try {
-                Desktop.getDesktop().browse(htmlFile.toURI());
-              } catch (IOException e) {
-                LOGGER.warning(String.format("Cannot open default browser. Please visit %s", url));
-              }
               ws.whenShutdown().thenRun(() -> System.out.println("WEB server is DOWN. Good bye!"));
             })
             .exceptionally(t -> {
