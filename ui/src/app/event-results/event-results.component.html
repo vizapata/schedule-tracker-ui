@@ -8,7 +8,8 @@
     </div>
 
     <div class="col-4">
-      <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="processEventsFile()">
+      <button mat-button color="primary" class="btn btn-success btn-sm" [disabled]="!selectedFiles"
+        (click)="processEventsFile()">
         Procesar archivo
       </button>
     </div>
@@ -22,7 +23,7 @@
   <mat-card class="filter-events mb-5">
     <mat-form-field>
       <mat-label>Filtro</mat-label>
-      <input matInput (keyup)="applyInputFilter($event)" placeholder="Ej. Maria" #input>
+      <input [value]="eventFilter.text" matInput (keyup)="applyInputFilter($event)" placeholder="Ej. Maria" #input>
     </mat-form-field>
 
     <mat-form-field>
@@ -39,12 +40,16 @@
 
     <mat-form-field>
       <mat-label>Tipo de evento</mat-label>
-      <mat-select [(value)]="eventType" (selectionChange)="applyTypeFilter()">
+      <mat-select [(value)]="eventFilter.eventType" (selectionChange)="applyTypeFilter()">
         <mat-option>Cualquiera</mat-option>
         <mat-option value="ENTRANCE">Entrada</mat-option>
         <mat-option value="EXIT">Salida</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <button *ngIf="filtered" mat-icon-button aria-label="Clear filters" title="Clear filters" (click)="clearFilters()">
+      <mat-icon>clear</mat-icon>
+    </button>
 
   </mat-card>
 

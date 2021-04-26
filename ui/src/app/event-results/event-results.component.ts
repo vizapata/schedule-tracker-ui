@@ -22,14 +22,15 @@ export class EventResultsComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   fileProcessed: boolean = false;
   events: MatTableDataSource<AppEvent> = new MatTableDataSource<AppEvent>();
+  filtered: boolean = false
   range = new FormGroup({
     startDate: new FormControl(),
     endDate: new FormControl()
   });
   eventFilter: EventFilter = {
-    text: ''
+    text: '',
+    eventType: ''
   };
-  eventType = undefined;
   selectedFiles?: FileList;
   currentFile?: File;
   message = ''; columns: EventDefinition[] = [
@@ -114,7 +115,7 @@ export class EventResultsComponent implements AfterViewInit {
       dateFiltered = data.date <= this.eventFilter.endDate.getTime()
     }
 
-    const eventTypeFiltered = this.eventType === undefined || data.eventType === this.eventType
+    const eventTypeFiltered = this.eventFilter.eventType === '' || this.eventFilter.eventType === data.eventType
     return dateFiltered && filtered && eventTypeFiltered
   }
 
@@ -126,11 +127,13 @@ export class EventResultsComponent implements AfterViewInit {
   }
 
   applyInputFilter(event: Event) {
+    this.filtered = true
     this.eventFilter.text = (event.target as HTMLInputElement).value;
     this.reload()
   }
 
   applyDateFilter() {
+    this.filtered = true
     this.eventFilter.startDate = undefined
     this.eventFilter.endDate = undefined
     if (this.range.get('startDate')) {
@@ -149,6 +152,18 @@ export class EventResultsComponent implements AfterViewInit {
   }
 
   applyTypeFilter() {
+    this.filtered = true
+    this.reload()
+  }
+
+  clearFilters() {
+    this.filtered = false
+    this.eventFilter.startDate = undefined
+    this.eventFilter.endDate = undefined
+    this.range.get('startDate')?.setValue(null)
+    this.range.get('endDate')?.setValue(null)
+    this.eventFilter.text = ''
+    this.eventFilter.eventType = ''
     this.reload()
   }
 }

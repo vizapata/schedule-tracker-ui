@@ -1,5 +1,6 @@
 export interface EventFilter {
   text: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
+  eventType: string
 }
