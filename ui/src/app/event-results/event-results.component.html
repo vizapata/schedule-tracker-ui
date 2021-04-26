@@ -37,6 +37,15 @@
       <mat-error *ngIf="range.controls.endDate.hasError('matEndDateInvalid')">Fecha final incorrecta</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Tipo de evento</mat-label>
+      <mat-select [(value)]="eventType" (selectionChange)="applyTypeFilter()">
+        <mat-option>Cualquiera</mat-option>
+        <mat-option value="ENTRANCE">Entrada</mat-option>
+        <mat-option value="EXIT">Salida</mat-option>
+      </mat-select>
+    </mat-form-field>
+
   </mat-card>
 
   <table mat-table [dataSource]="events" class="mat-elevation-z8" matSort>

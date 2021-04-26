@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -43,6 +44,7 @@ import { LayoutComponent } from './layout/layout.component';
     MatToolbarModule,
     MatProgressBarModule,
     MatButtonModule,
+    MatSelectModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,

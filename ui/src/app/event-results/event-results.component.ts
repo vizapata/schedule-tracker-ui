@@ -29,6 +29,7 @@ export class EventResultsComponent implements AfterViewInit {
   eventFilter: EventFilter = {
     text: ''
   };
+  eventType = undefined;
   selectedFiles?: FileList;
   currentFile?: File;
   message = ''; columns: EventDefinition[] = [
@@ -101,6 +102,7 @@ export class EventResultsComponent implements AfterViewInit {
       data.person.department,
       data.person.id,
     ])
+    const filtered = serialized.includes(this.lowerCaseAndTrim(this.eventFilter.text))
     let dateFiltered = true
     if (this.eventFilter.startDate && this.eventFilter.endDate) {
       dateFiltered = this.eventFilter.startDate.getTime() <= data.date && data.date <= this.eventFilter.endDate.getTime()
@@ -111,7 +113,9 @@ export class EventResultsComponent implements AfterViewInit {
     else if (this.eventFilter.endDate) {
       dateFiltered = data.date <= this.eventFilter.endDate.getTime()
     }
-    return dateFiltered && serialized.includes(this.lowerCaseAndTrim(this.eventFilter.text))
+
+    const eventTypeFiltered = this.eventType === undefined || data.eventType === this.eventType
+    return dateFiltered && filtered && eventTypeFiltered
   }
 
   private reload() {
@@ -141,6 +145,10 @@ export class EventResultsComponent implements AfterViewInit {
       this.eventFilter.endDate?.setMinutes(59)
       this.eventFilter.endDate?.setSeconds(59)
     }
+    this.reload()
+  }
+
+  applyTypeFilter() {
     this.reload()
   }
 }
